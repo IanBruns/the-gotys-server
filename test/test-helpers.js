@@ -21,6 +21,34 @@ function makeUsersArray() {
     ];
 }
 
+function makeReviewsFixtures() {
+    const testUsers = makeUsersArray();
+
+    return { testUsers }
+}
+
+function cleanTables(db) {
+    return db.transaction(async trx =>
+        await trx.raw(
+            `TRUNCATE
+                reviews,
+                games,
+                users
+            `
+        )
+            .then(() =>
+                Promise.all([
+                    trx.raw(`ALTER SEQUENCE reviews_id_seq minvalue 0 START WITH 1`),
+                    trx.raw(`ALTER SEQUENCE games_id_seq minvalue 0 START WITH 1`),
+                    trx.raw(`ALTER SEQUENCE users_id_seq minvalue 0 START WITH 1`),
+                    trx.raw(`SELECT setval('reviews_id_seq', 0)`),
+                    trx.raw(`SELECT setval('games_id_seq', 0)`),
+                    trx.raw(`SELECT setval('users_id_seq', 0)`),
+                ])
+            )
+    )
+}
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
         subject: user.user_name,
@@ -46,6 +74,8 @@ function seedUsers(db, users) {
 
 module.exports = {
     makeUsersArray,
+    makeReviewsFixtures,
+    cleanTables,
     makeAuthHeader,
     seedUsers,
 };

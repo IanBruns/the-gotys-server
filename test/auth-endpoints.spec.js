@@ -7,7 +7,7 @@ const helpers = require('./test-helpers');
 describe('Auth Endpoints', function () {
     let db;
 
-    const { testUsers } = helpers.makeExercisesFixtures();
+    const { testUsers } = helpers.makeReviewsFixtures();
     const testUser = testUsers[0];
 
     before('Make Knex Instance', () => {
