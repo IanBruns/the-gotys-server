@@ -13,14 +13,16 @@ VALUES
 
 INSERT INTO games (game_name, assigned_user)
 VALUES
-('game 1', 1)
-('game 2', 1)
-('game 3', 2)
+('game 1', 1),
+('game 2', 1),
+('game 3', 2),
 ('game 4', 2);
 
 INSERT INTO reviews (score, review, current_year, assigned_game)
 VALUES
 (4, 'Review of game 1', true, 1),
-(8, 'Review of game 2', no, 1),
-(10, 'Review of game 3', no, 1),
-(9, 'Review of game 4', yes, 1);
+(8, 'Review of game 2', false, 1),
+(10, 'Review of game 3', false, 1),
+(9, 'Review of game 4', true, 1);
+
+COMMIT;
