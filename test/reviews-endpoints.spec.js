@@ -27,14 +27,16 @@ describe.only('Reviews Endpoints', () => {
 
     describe('GET /api/reviews', () => {
         context('When there are no items in the database', () => {
-            beforeEach('seed users', () => helpers.seedUsers(db, testUsers));
-        });
+            beforeEach('seed users', () => {
+                return helpers.seedUsers(db, testUsers);
+            });
 
-        it('returns a 200 and an empty list', () => {
-            return supertest(app)
-                .get('/api/reviews')
-                .set('Authorization', helpers.makeAuthHeader(testUser))
-                .expect(200, []);
+            it('returns a 200 and an empty list', () => {
+                return supertest(app)
+                    .get('/api/reviews')
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
+                    .expect(200, []);
+            });
         });
     });
 });

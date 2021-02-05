@@ -9,7 +9,11 @@ const jsonBodyParser = express.json();
 reviewsRouter.route('/')
     .all(requireAuth)
     .get((req, res, next) => {
-        return res.json([]);
+        ReviewsService.getUserReviews(req.app.get('db'), req.user.id)
+            .then(reviews => {
+                return res.json(reviews.map(review =>
+                    ReviewsService.sanitizeReview(review)));
+            });
     });
 
 
