@@ -4,10 +4,11 @@ const supertest = require('supertest');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe('Reviews Endpoints', () => {
+describe.only('Reviews Endpoints', () => {
     let db;
 
     const { testUsers, testReviews } = helpers.makeReviewsFixtures();
+    const testUser = testUsers[0];
 
     before('make knex instance', () => {
         db = knex({
@@ -23,4 +24,17 @@ describe('Reviews Endpoints', () => {
     before('cleanup', () => helpers.cleanTables(db));
 
     afterEach('cleanup', () => helpers.cleanTables(db));
+
+    describe('GET /api/reviews', () => {
+        context('When there are no items in the database', () => {
+            beforeEach('seed users', () => helpers.seedUsers(db, testUsers));
+        });
+
+        it('returns a 200 and an empty list', () => {
+            return supertest(app)
+                .get('/api/reviews')
+                .set('Authorization', helpers.makeAuthHeader(testUser))
+                .expect(200, []);
+        });
+    });
 });
