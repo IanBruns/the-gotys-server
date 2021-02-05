@@ -13,18 +13,55 @@ function makeUsersArray() {
             user_name: 'Test-user-2',
             password: 'password',
         },
+    ];
+}
+
+function makeReviewsArray() {
+    return [
+        {
+            id: 1,
+            game_name: 'Game 1',
+            score: 9,
+            review: 'Review of Game 1',
+            current_year: false,
+            review_year: 2021,
+            assigned_user: 1
+        },
+        {
+            id: 2,
+            game_name: 'Game 2',
+            score: 2,
+            review: 'Review of Game 2',
+            current_year: true,
+            review_year: 2021,
+            assigned_user: 1
+        },
         {
             id: 3,
-            user_name: 'Test-user-3',
-            password: 'password',
+            game_name: 'Game 3',
+            score: 10,
+            review: 'Review of Game 3',
+            current_year: false,
+            review_year: 2021,
+            assigned_user: 2
         },
-    ];
+        {
+            id: 4,
+            game_name: 'Game 4',
+            score: 5,
+            review: 'Review of Game 4',
+            current_year: true,
+            review_year: 2021,
+            assigned_user: 2
+        },
+    ]
 }
 
 function makeReviewsFixtures() {
     const testUsers = makeUsersArray();
+    const testReviews = makeReviewsArray();
 
-    return { testUsers }
+    return { testUsers, testReviews }
 }
 
 function cleanTables(db) {
