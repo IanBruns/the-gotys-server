@@ -105,10 +105,22 @@ function seedUsers(db, users) {
             ));
 }
 
+function seedReviewsTable(db, users, reviews) {
+    return db.transaction(async trx => {
+        await seedUsers(trx, users);
+        await trx.into('reviews').insert(reviews);
+        await trx.raw(
+            `SELECT setval('reviews_id_seq', ?)`,
+            [reviews[reviews.length - 1].id],
+        );
+    })
+}
+
 module.exports = {
     makeUsersArray,
     makeReviewsFixtures,
     cleanTables,
     makeAuthHeader,
     seedUsers,
+    seedReviewsTable,
 };

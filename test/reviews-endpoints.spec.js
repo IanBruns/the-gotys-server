@@ -38,5 +38,8 @@ describe.only('Reviews Endpoints', () => {
                     .expect(200, []);
             });
         });
+
+        context('When there are reviews in the database', () => {
+        });
     });
 });
