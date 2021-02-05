@@ -32,17 +32,14 @@ function cleanTables(db) {
         await trx.raw(
             `TRUNCATE
                 reviews,
-                games,
                 users
             `
         )
             .then(() =>
                 Promise.all([
                     trx.raw(`ALTER SEQUENCE reviews_id_seq minvalue 0 START WITH 1`),
-                    trx.raw(`ALTER SEQUENCE games_id_seq minvalue 0 START WITH 1`),
                     trx.raw(`ALTER SEQUENCE users_id_seq minvalue 0 START WITH 1`),
                     trx.raw(`SELECT setval('reviews_id_seq', 0)`),
-                    trx.raw(`SELECT setval('games_id_seq', 0)`),
                     trx.raw(`SELECT setval('users_id_seq', 0)`),
                 ])
             )
