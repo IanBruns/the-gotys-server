@@ -40,6 +40,18 @@ describe.only('Reviews Endpoints', () => {
         });
 
         context('When there are reviews in the database', () => {
+            beforeEach('Seed users and reviews', () => {
+                return helpers.seedReviewsTable(db, testUsers, testReviews);
+            });
+
+            it('returns a 200 and the list of the reviews', () => {
+                const expectedReviews = testReviews.filter(review => review.assigned_user == testUser.id);
+
+                return supertest(app)
+                    .get('/api/reviews')
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
+                    .expect(200, expectedReviews);
+            });
         });
     });
 });
