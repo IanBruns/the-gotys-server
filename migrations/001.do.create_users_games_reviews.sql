@@ -10,5 +10,6 @@ CREATE TABLE reviews (
     score INTEGER NOT NULL,
     review TEXT NOT NULL,
     current_year BOOLEAN NOT NULL,
+    review_year INT NOT NULL,
     assigned_user INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL
 )
