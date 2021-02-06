@@ -27,6 +27,8 @@ reviewsRouter.route('/')
                 });
             }
         }
+
+        newReview.assigned_user = req.user.id;
     });
 
 
