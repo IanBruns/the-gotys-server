@@ -75,6 +75,7 @@ describe.only('Reviews Endpoints', () => {
                 return supertest(app)
                     .post('/api/reviews')
                     .set('Authorization', helpers.makeAuthHeader(testUser))
+                    .send(newReview)
                     .expect(400, {
                         error: { message: `${field} missing in request body` }
                     });

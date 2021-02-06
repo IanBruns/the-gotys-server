@@ -17,7 +17,16 @@ reviewsRouter.route('/')
             .catch(next);
     })
     .post(jsonBodyParser, (req, res, next) => {
-        return res.status(200).json('hi, mom');
+        const { game_name, score, review, current_year, review_year } = req.body;
+        const newReview = { game_name, score, review, current_year, review_year };
+
+        for (const field of ['game_name', 'score', 'review', 'current_year', 'review_year']) {
+            if (!newReview[field]) {
+                return res.status(400).send({
+                    error: { message: `${field} missing in request body` }
+                });
+            }
+        }
     });
 
 
