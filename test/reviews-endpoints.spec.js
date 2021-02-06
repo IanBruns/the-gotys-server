@@ -55,9 +55,9 @@ describe.only('Reviews Endpoints', () => {
         });
     });
 
-    describe('POST /api/review', () => {
+    describe.only('POST /api/review', () => {
         beforeEach('seed users', () => {
-            return helpers.seedUsers(testUsers);
+            return helpers.seedUsers(db, testUsers);
         });
 
         ['game_name', 'score', 'review', 'current_year', 'review_year'].forEach(field => {

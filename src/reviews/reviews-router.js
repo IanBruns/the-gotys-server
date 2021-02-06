@@ -17,7 +17,7 @@ reviewsRouter.route('/')
             .catch(next);
     })
     .post(jsonBodyParser, (req, res, next) => {
-
+        return res.status(200).json('hi, mom');
     });
 
 
