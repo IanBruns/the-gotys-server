@@ -54,4 +54,10 @@ describe.only('Reviews Endpoints', () => {
             });
         });
     });
+
+    describe('POST /api/review', () => {
+        beforeEach('seed users', () => {
+            return helpers.seedUsers(testUsers);
+        });
+    });
 });

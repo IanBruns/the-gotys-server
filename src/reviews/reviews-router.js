@@ -13,7 +13,11 @@ reviewsRouter.route('/')
             .then(reviews => {
                 return res.json(reviews.map(review =>
                     ReviewsService.sanitizeReview(review)));
-            });
+            })
+            .catch(next);
+    })
+    .post(jsonBodyParser, (req, res, next) => {
+
     });
 
 
