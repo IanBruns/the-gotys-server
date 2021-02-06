@@ -59,5 +59,26 @@ describe.only('Reviews Endpoints', () => {
         beforeEach('seed users', () => {
             return helpers.seedUsers(testUsers);
         });
+
+        ['game_name', 'score', 'review', 'current_year', 'review_year'].forEach(field => {
+            const newReview = {
+                game_name: 'post game',
+                score: 9,
+                review: 'post review',
+                current_year: true,
+                review_year: 2021
+            };
+
+            it(`responds with a 400 missing ${field} if not supplied`, () => {
+                delete newReview[field];
+
+                return supertest(app)
+                    .post('/api/reviews')
+                    .set('Authorization', helpers.makeAuthHeader(testUser))
+                    .expect(400, {
+                        error: { message: `${field} missing in request body` }
+                    });
+            });
+        });
     });
 });
