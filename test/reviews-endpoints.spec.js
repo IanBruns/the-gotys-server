@@ -137,9 +137,20 @@ describe.only('Reviews Endpoints', () => {
         });
     });
 
-    describe('DELETE /api/reviews', () => {
+    describe.only('DELETE /api/reviews/:review_id', () => {
         beforeEach('Seed users and routines', () => {
             return helpers.seedReviewsTable(db, testUsers, testReviews);
+        });
+
+        it('Returns a 404 if the review id does not exist', () => {
+            const fakeId = 1612;
+
+            return supertest(app)
+                .delete(`/api/reviews/${fakeId}`)
+                .set('Authorization', helpers.makeAuthHeader(testUser))
+                .expect(404, {
+                    error: { message: `Review not found` }
+                });
         });
     });
 });

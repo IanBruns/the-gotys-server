@@ -39,5 +39,31 @@ reviewsRouter.route('/')
             .catch(next);
     });
 
+reviewsRouter.route('/:review_id')
+    .all(requireAuth)
+    .all(checkValidReview)
+    .delete((req, res, next) => {
+        return res.status(204).json([])
+    })
 
+async function checkValidReview(req, res, next) {
+    try {
+        const review = await ReviewsService.getById(
+            req.app.get('db'),
+            req.user.id,
+            parseInt(req.params.review_id)
+        )
+
+        if (!review) {
+            return res.status(404).json({
+                error: { message: `Review not found` }
+            })
+        }
+
+        res.review = review;
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
 module.exports = reviewsRouter;
