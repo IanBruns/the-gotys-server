@@ -166,12 +166,12 @@ describe('Reviews Endpoints', () => {
                 .delete(`/api/reviews/${deleteId}`)
                 .set('Authorization', helpers.makeAuthHeader(testUser))
                 .expect(204)
-                .expect(res => {
-                    return supertest(app)
+                .expect(res =>
+                    supertest(app)
                         .get('/api/reviews')
                         .set('Authorization', helpers.makeAuthHeader(testUser))
-                        .expect(expectedResults);
-                });
+                        .expect(expectedResults)
+                );
         });
     });
 });
