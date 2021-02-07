@@ -20,6 +20,12 @@ const ReviewsService = {
             .where('id', review_id)
             .first();
     },
+    deleteReview(db, review_id) {
+        return db
+            .from('reviews')
+            .where({ id: review_id })
+            .delete();
+    },
     sanitizeReview(review) {
         return {
             id: review.id,

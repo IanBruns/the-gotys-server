@@ -43,7 +43,10 @@ reviewsRouter.route('/:review_id')
     .all(requireAuth)
     .all(checkValidReview)
     .delete((req, res, next) => {
-        return res.status(204).json([])
+        ReviewsService.deleteReview(req.app.get('db'), res.review.id)
+            .then(numRowsAffected => {
+                return res.status(204).end();
+            })
     })
 
 async function checkValidReview(req, res, next) {

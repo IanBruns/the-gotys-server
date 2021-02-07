@@ -5,7 +5,7 @@ const supertest = require('supertest');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('Reviews Endpoints', () => {
+describe('Reviews Endpoints', () => {
     let db;
 
     const { testUsers, testReviews } = helpers.makeReviewsFixtures();
@@ -137,7 +137,7 @@ describe.only('Reviews Endpoints', () => {
         });
     });
 
-    describe.only('DELETE /api/reviews/:review_id', () => {
+    describe('DELETE /api/reviews/:review_id', () => {
         beforeEach('Seed users and routines', () => {
             return helpers.seedReviewsTable(db, testUsers, testReviews);
         });
@@ -150,6 +150,27 @@ describe.only('Reviews Endpoints', () => {
                 .set('Authorization', helpers.makeAuthHeader(testUser))
                 .expect(404, {
                     error: { message: `Review not found` }
+                });
+        });
+
+        it('Returns a 204 and deletes the item', () => {
+            const deleteId = 2;
+            const expectedResults = testReviews.filter(review => {
+                return (
+                    review.assigned_user == testUser.id &&
+                    review.id != deleteId
+                );
+            });
+
+            return supertest(app)
+                .delete(`/api/reviews/${deleteId}`)
+                .set('Authorization', helpers.makeAuthHeader(testUser))
+                .expect(204)
+                .expect(res => {
+                    return supertest(app)
+                        .get('/api/reviews')
+                        .set('Authorization', helpers.makeAuthHeader(testUser))
+                        .expect(expectedResults);
                 });
         });
     });
