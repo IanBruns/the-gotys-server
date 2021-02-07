@@ -29,6 +29,14 @@ reviewsRouter.route('/')
         }
 
         newReview.assigned_user = req.user.id;
+
+        ReviewsService.addReview(req.app.get('db'), newReview)
+            .then(review => {
+                return res.status(201)
+                    .location(path.posix.join(req.originalUrl, `/${review.id}`))
+                    .json(ReviewsService.sanitizeReview(review));
+            })
+            .catch(next);
     });
 
 
