@@ -56,7 +56,7 @@ describe.only('Reviews Endpoints', () => {
         });
     });
 
-    describe.only('POST /api/review', () => {
+    describe('POST /api/reviews', () => {
         beforeEach('seed users', () => {
             return helpers.seedUsers(db, testUsers);
         });
@@ -134,6 +134,12 @@ describe.only('Reviews Endpoints', () => {
                     expect(res.body.game_name).to.equal(expectedReview.game_name);
                     expect(res.body.review).to.equal(expectedReview.review);
                 });
+        });
+    });
+
+    describe('DELETE /api/reviews', () => {
+        beforeEach('Seed users and routines', () => {
+            return helpers.seedReviewsTable(db, testUsers, testReviews);
         });
     });
 });
