@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { expectCt } = require('helmet');
 const knex = require('knex');
 const supertest = require('supertest');
 const app = require('../src/app');
@@ -80,6 +81,36 @@ describe.only('Reviews Endpoints', () => {
                         error: { message: `${field} missing in request body` }
                     });
             });
+        });
+
+        it('return a 201 and pulls the item in a GET request', () => {
+            const newReview = {
+                game_name: 'post game',
+                score: 9,
+                review: 'post review',
+                current_year: true,
+                review_year: 2021
+            };
+
+            return supertest(app)
+                .post('/api/reviews')
+                .set('Authorization', helpers.makeAuthHeader(testUser))
+                .send(newReview)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body).to.have.property('id');
+                    expect(res.body.game_name).to.eql(newReview.game_name);
+                    expect(res.body.score).to.eql(newReview.score);
+                    expect(res.body.review).to.eql(newReview.review);
+                    expect(res.body.current_year).to.eql(newReview.current_year);
+                    expect(res.body.review_year).to.eql(newReview.review_year);
+                    expect(res.body.assigned_user).to.eql(testUser.id);
+                })
+                .expect(res => {
+                    return db.from('reviews')
+                        .select('*')
+                        .where({ id: res.body.id })
+                })
         });
     });
 });
