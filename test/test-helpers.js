@@ -116,6 +116,29 @@ function seedReviewsTable(db, users, reviews) {
     })
 }
 
+function makeMaliciousReview() {
+    const meanReview = {
+        game_name: 'Naughty naughty very naughty <script>alert("xss");</script>',
+        score: 9,
+        review: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+        current_year: true,
+        review_year: 2021
+    }
+
+    const expectedReview = {
+        game_name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+        score: 9,
+        review: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+        current_year: true,
+        review_year: 2021
+    }
+
+    return {
+        meanReview,
+        expectedReview
+    }
+}
+
 module.exports = {
     makeUsersArray,
     makeReviewsFixtures,
@@ -123,4 +146,5 @@ module.exports = {
     makeAuthHeader,
     seedUsers,
     seedReviewsTable,
+    makeMaliciousReview
 };

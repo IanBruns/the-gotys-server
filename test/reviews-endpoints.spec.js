@@ -121,5 +121,19 @@ describe.only('Reviews Endpoints', () => {
                         });
                 });
         });
+
+        it('Sanitizes an XSS attack', () => {
+            const { meanReview, expectedReview } = helpers.makeMaliciousReview();
+
+            return supertest(app)
+                .post('/api/reviews')
+                .set('Authorization', helpers.makeAuthHeader(testUser))
+                .send(meanReview)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body.game_name).to.equal(expectedReview.game_name);
+                    expect(res.body.review).to.equal(expectedReview.review);
+                });
+        });
     });
 });
