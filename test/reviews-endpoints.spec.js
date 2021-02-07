@@ -1,5 +1,4 @@
 const { expect } = require('chai');
-const { expectCt } = require('helmet');
 const knex = require('knex');
 const supertest = require('supertest');
 const app = require('../src/app');
