@@ -110,7 +110,16 @@ describe.only('Reviews Endpoints', () => {
                     return db.from('reviews')
                         .select('*')
                         .where({ id: res.body.id })
-                })
+                        .first()
+                        .then(row => {
+                            expect(row.game_name).to.eql(newReview.game_name);
+                            expect(row.score).to.eql(newReview.score);
+                            expect(row.review).to.eql(newReview.review);
+                            expect(row.current_year).to.eql(newReview.current_year);
+                            expect(row.review_year).to.eql(newReview.review_year);
+                            expect(row.assigned_user).to.eql(testUser.id);
+                        });
+                });
         });
     });
 });
